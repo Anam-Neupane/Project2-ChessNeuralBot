@@ -1,0 +1,11 @@
+# Python 
+
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+venv/
+.DS_Store
+
+#This is large training data that can't be commited 
+data/
