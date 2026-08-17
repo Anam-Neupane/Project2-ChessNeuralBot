@@ -41,7 +41,7 @@ def get_move():
     move = pick_move(board) 
     return flask.jsonify({"move": move.uci() if move else None})
 
-if __name__ == "__main__": 
-    app.run(host="127.0.0.1", port=5000, threaded=True)
-    
-    
+if __name__ == "__main__":
+    from waitress import serve
+
+    serve(app, host="127.0.0.1", port=5000)

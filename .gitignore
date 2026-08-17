@@ -9,3 +9,7 @@ venv/
 
 #This is large training data that can't be commited 
 data/
+#Build files are here
+build/
+#Exe file created using pyinstaller
+dist/

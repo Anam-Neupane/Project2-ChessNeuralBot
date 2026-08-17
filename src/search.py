@@ -13,7 +13,26 @@ sys.path.insert(0,SRC_DIR)
 from model import ChessNet
 from board_utils import board_to_tensor, mask_illegal_moves, index_to_move_squares
 
-MODEL_PATH = os.path.join(ROOT, "checkpoints", "best_model.pt")
+def _model_path():
+    candidates = []
+    if getattr(sys, "frozen", False):
+        # PyInstaller --onedir keeps data files in the _internal directory.
+        meipass = getattr(sys, "_MEIPASS", None)
+        if meipass:
+            candidates.append(os.path.join(meipass, "checkpoints", "best_model.pt"))
+        candidates.append(os.path.join(
+            os.path.dirname(os.path.abspath(sys.executable)),
+            "checkpoints", "best_model.pt"))
+    else:
+        candidates.append(os.path.join(ROOT, "checkpoints", "best_model.pt"))
+    for candidate in candidates:
+        if os.path.isfile(candidate):
+            return candidate
+    return candidates[0]
+
+MODEL_PATH = _model_path()
+if not os.path.isfile(MODEL_PATH):
+    raise RuntimeError("Model not found at %s"% MODEL_PATH)
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
